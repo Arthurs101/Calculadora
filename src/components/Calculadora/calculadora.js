@@ -1,10 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import './style.scss'
 function Calculator() {
+  const operators = ['+','-','*','/','%']
   const [display, setDisplay] = useState('0');
+  const [number, setNumber] = useState('');
   const [historial, setHistorial] = useState([])
+  const [darkmode, setDarkMode] = useState(false)
   const handleButtonClick = (value) => {
-    setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value);
+    if(!operators.includes(value)) {
+      if( number.length < 9 ) {
+        setNumber(number + value)
+        setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value);
+      }
+    }else{
+      setNumber('')
+      setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value);
+    }
+    
+      
   };
 
   const handleCalculate = () => {
@@ -25,9 +38,20 @@ function Calculator() {
     handleClear();
     setHistorial([]);
   }
+  const handleButtonTheme = () => {
+    setDarkMode(!darkmode);
+  }
+
+  useEffect(() => {
+    if (darkmode) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }, [darkmode]);
 
   return (
-    <div className="calculator">
+    <div className={`calculator ${darkmode? 'dark' : '' }`}>
       <div className="display">{display}
       <div className='display historial'>
       {
@@ -69,6 +93,8 @@ function Calculator() {
         <div className="button-row">
           <button onClick={handleClear} className='operator AC'>Clear</button>
           <button onClick={handleAClear} className='operator AC'>AC</button>
+          <button onClick={() => handleButtonClick('%')} className='operator'>%</button>
+          <button onClick={() => handleButtonTheme()} className='theme'>{darkmode? 'dark':'light'}</button>
         </div>
       </div>
     </div>
