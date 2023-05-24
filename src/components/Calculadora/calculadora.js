@@ -6,9 +6,16 @@ function Calculator() {
   const [number, setNumber] = useState('');
   const [historial, setHistorial] = useState([])
   const [darkmode, setDarkMode] = useState(false)
+  const [negative, setNegative] = useState(false);
+  const charactersToIgnore = ["-"];
   const handleButtonClick = (value) => {
     if(!operators.includes(value)) {
-      if( number.length < 9 ) {
+      // Eliminar los caracteres a ignorar
+      const filteredStr = number.replace(new RegExp(`[${charactersToIgnore.join("")}]`, "g"), "");
+      // Contar la longitud del string filtrado
+      const length = filteredStr.length;
+      console.log(length); // Resultado: 10
+      if( length < 9 ) {
         setNumber(number + value)
         setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value);
       }
@@ -23,8 +30,8 @@ function Calculator() {
   const handleCalculate = () => {
     try {
       const result = eval(display);
-      setDisplay(result.toString());
-      setHistorial(historial.concat(`${display} = ${result}`).reverse());
+      setDisplay(result.toPrecision(9).toString());
+      setHistorial(historial.concat(`${display} = ${result.toPrecision(9)}`).reverse());
     } catch (error) {
       setDisplay('Error');
       console.log(error);
@@ -50,6 +57,16 @@ function Calculator() {
     }
   }, [darkmode]);
 
+  const handleNegative = () => {
+    setNegative((prevNegative) => !prevNegative);
+  
+    if (number !== '') {
+      const newNumber = negative ? number.slice(1) : `-${number}`;
+      setNumber(newNumber);
+      setDisplay((prevDisplay) => (prevDisplay === '0' ? newNumber : prevDisplay.replace(number, newNumber)));
+    }
+  };
+  
   return (
     <div className={`calculator ${darkmode? 'dark' : '' }`}>
       <div className="display">{display}
@@ -89,6 +106,9 @@ function Calculator() {
           <button onClick={() => handleButtonClick('-')} className='operator'>-</button>
           <button onClick={() => handleButtonClick('*')} className='operator'>*</button>
           <button onClick={() => handleButtonClick('/')} className='operator'>/</button>
+          <button onClick={handleNegative} className="operator">
+  +/-
+</button>
         </div>
         <div className="button-row">
           <button onClick={handleClear} className='operator AC'>Clear</button>
