@@ -1,30 +1,29 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './style.scss'
+
 function Calculator() {
-  const operators = ['+','-','*','/','%']
+  const operators = ['+', '-', '*', '/', '%']
   const [display, setDisplay] = useState('0');
   const [number, setNumber] = useState('');
   const [historial, setHistorial] = useState([])
   const [darkmode, setDarkMode] = useState(false)
   const [negative, setNegative] = useState(false);
-  const charactersToIgnore = ["-"];
+  const charactersToIgnore = ['-'];
   const handleButtonClick = (value) => {
-    if(!operators.includes(value)) {
+    if (!operators.includes(value)) {
       // Eliminar los caracteres a ignorar
-      const filteredStr = number.replace(new RegExp(`[${charactersToIgnore.join("")}]`, "g"), "")
+      const filteredStr = number.replace(new RegExp(`[${charactersToIgnore.join('')}]`, 'g'), '')
       // Contar la longitud del string filtrado
-      const length = filteredStr.length
+      const { length } = filteredStr
       console.log(length); // Resultado: 10
-      if( length < 9 ) {
+      if (length < 9) {
         setNumber(number + value)
-        setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value)
+        setDisplay((prevDisplay) => (prevDisplay === '0' ? value : prevDisplay + value))
       }
-    }else{
+    } else {
       setNumber('')
-      setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value)
+      setDisplay((prevDisplay) => (prevDisplay === '0' ? value : prevDisplay + value))
     }
-    
-      
   };
 
   const handleCalculate = () => {
@@ -59,26 +58,27 @@ function Calculator() {
 
   const handleNegative = () => {
     setNegative((prevNegative) => !prevNegative)
-  
+
     if (number !== '') {
       const newNumber = negative ? number.slice(1) : `-${number}`
       setNumber(newNumber);
       setDisplay((prevDisplay) => (prevDisplay === '0' ? newNumber : prevDisplay.replace(number, newNumber)))
     }
   }
-  
+
   return (
-    <div className={`calculator ${darkmode? 'dark' : '' }`}>
-      <div className="display">{display}
-      <div className='display historial'>
-      {
+    <div className={`calculator ${darkmode ? 'dark' : ''}`}>
+      <div className="display">
+        {display}
+        <div className="display historial">
+          {
       historial.map((operation) => [
         <div className="historial-item">
           {operation}
-        </div>
+        </div>,
       ])
      }
-      </div>
+        </div>
       </div>
       <div className="buttons">
         <div className="button-row">
@@ -102,19 +102,19 @@ function Calculator() {
           <button onClick={handleCalculate}>=</button>
         </div>
         <div className="button-row">
-          <button onClick={() => handleButtonClick('+')} className='operator'>+</button>
-          <button onClick={() => handleButtonClick('-')} className='operator'>-</button>
-          <button onClick={() => handleButtonClick('*')} className='operator'>*</button>
-          <button onClick={() => handleButtonClick('/')} className='operator'>/</button>
+          <button onClick={() => handleButtonClick('+')} className="operator">+</button>
+          <button onClick={() => handleButtonClick('-')} className="operator">-</button>
+          <button onClick={() => handleButtonClick('*')} className="operator">*</button>
+          <button onClick={() => handleButtonClick('/')} className="operator">/</button>
           <button onClick={handleNegative} className="operator">
-  +/-
-</button>
+            +/-
+          </button>
         </div>
         <div className="button-row">
-          <button onClick={handleClear} className='operator AC'>Clear</button>
-          <button onClick={handleAClear} className='operator AC'>AC</button>
-          <button onClick={() => handleButtonClick('%')} className='operator'>%</button>
-          <button onClick={() => handleButtonTheme()} className='theme'>{darkmode? 'dark':'light'}</button>
+          <button onClick={handleClear} className="operator AC">Clear</button>
+          <button onClick={handleAClear} className="operator AC">AC</button>
+          <button onClick={() => handleButtonClick('%')} className="operator">%</button>
+          <button onClick={() => handleButtonTheme()} className="theme">{darkmode ? 'dark' : 'light'}</button>
         </div>
       </div>
     </div>
