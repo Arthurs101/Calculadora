@@ -11,17 +11,17 @@ function Calculator() {
   const handleButtonClick = (value) => {
     if(!operators.includes(value)) {
       // Eliminar los caracteres a ignorar
-      const filteredStr = number.replace(new RegExp(`[${charactersToIgnore.join("")}]`, "g"), "");
+      const filteredStr = number.replace(new RegExp(`[${charactersToIgnore.join("")}]`, "g"), "")
       // Contar la longitud del string filtrado
-      const length = filteredStr.length;
+      const length = filteredStr.length
       console.log(length); // Resultado: 10
       if( length < 9 ) {
         setNumber(number + value)
-        setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value);
+        setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value)
       }
     }else{
       setNumber('')
-      setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value);
+      setDisplay((prevDisplay) => prevDisplay === '0' ? value : prevDisplay + value)
     }
     
       
@@ -30,11 +30,11 @@ function Calculator() {
   const handleCalculate = () => {
     try {
       const result = eval(display);
-      setDisplay(result.toPrecision(9).toString());
-      setHistorial(historial.concat(`${display} = ${result.toPrecision(9)}`).reverse());
+      setDisplay(result.toPrecision(9).toString())
+      setHistorial(historial.concat(`${display} = ${result.toPrecision(9)}`).reverse())
     } catch (error) {
-      setDisplay('Error');
-      console.log(error);
+      setDisplay('Error')
+      console.log(error)
     }
   };
 
@@ -51,21 +51,21 @@ function Calculator() {
 
   useEffect(() => {
     if (darkmode) {
-      document.body.classList.add('dark-mode');
+      document.body.classList.add('dark-mode')
     } else {
-      document.body.classList.remove('dark-mode');
+      document.body.classList.remove('dark-mode')
     }
-  }, [darkmode]);
+  }, [darkmode])
 
   const handleNegative = () => {
-    setNegative((prevNegative) => !prevNegative);
+    setNegative((prevNegative) => !prevNegative)
   
     if (number !== '') {
-      const newNumber = negative ? number.slice(1) : `-${number}`;
+      const newNumber = negative ? number.slice(1) : `-${number}`
       setNumber(newNumber);
-      setDisplay((prevDisplay) => (prevDisplay === '0' ? newNumber : prevDisplay.replace(number, newNumber)));
+      setDisplay((prevDisplay) => (prevDisplay === '0' ? newNumber : prevDisplay.replace(number, newNumber)))
     }
-  };
+  }
   
   return (
     <div className={`calculator ${darkmode? 'dark' : '' }`}>
@@ -121,4 +121,4 @@ function Calculator() {
   );
 }
 
-export default Calculator;
+export default Calculator

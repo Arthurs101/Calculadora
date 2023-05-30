@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //html
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"); //css
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 //root
 const path = require("path")
@@ -32,7 +33,8 @@ module.exports ={
       new MiniCssExtractPlugin({
         filename: "[name].css"
       }) ,
-      new CleanWebpackPlugin({cleanAfterEveryBuildPatterns: ['dist']})
+      new CleanWebpackPlugin({cleanAfterEveryBuildPatterns: ['dist']}),
+      new ESLintPlugin()
     ],
     //module rules, creating bundle for a scss
     module: {
